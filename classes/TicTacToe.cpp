@@ -54,10 +54,44 @@ Bit* TicTacToe::PieceForPlayer(const int playerNumber)
 void TicTacToe::setUpBoard()
 {
     // here we should call setNumberOfPlayers to 2 and then set up the game options so the mouse knows to draw a 3x3 grid
+
+    setNumberOfPlayers(2);
+
     // _gameOptions has a rowX and rowY property we should set to 3
+
+    _gameOptions.rowX = 3;
+    _gameOptions.rowY = 3;
+
     // then we need to setup our 3x3 array in _grid with the correct position of the square, and load the "square.png" sprite for each square
     // we will use the initHolder function on each square to do this
+
+    // vec2 that gets upkept over each portion of the for loop
+    ImVec2 locat = ImVec2(40.0f, 60.0f);
+    // convenience vec2 (makes reset easy)
+    ImVec2 reset_to = ImVec2(40.0f, 60.0f);
+
+    float offset_amount = 100.0f;
+
+    for (int i = 0; i < _gameOptions.rowY; i++) {
+
+        locat.y += offset_amount * i;
+
+        for (int j = 0; j < _gameOptions.rowX; j++) {
+
+            _grid[j][i].initHolder(locat, "square.png", j, i);
+
+            locat.x += offset_amount;
+
+        }
+
+        locat = reset_to;
+
+    }
+
     // finally we should call startGame to get everything going
+
+    startGame();
+
 }
 
 //
@@ -69,9 +103,17 @@ bool TicTacToe::actionForEmptyHolder(BitHolder *holder)
     //    (Beginner hint: always check pointers before using them.)
     //    if (!holder) return false;
 
+    if (!holder) {
+        return false;
+    }
+
     // 2) Is it actually empty?
     //    Ask the holder for its current Bit using the bit() function.
     //    If there is already a Bit in this holder, return false.
+
+    if (holder->bit()) {
+        return false;
+    }
 
     // 3) Place the current player's piece on this holder:
     //    - Figure out whose turn it is (getCurrentPlayer()->playerNumber()).
