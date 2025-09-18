@@ -259,7 +259,7 @@ Player* TicTacToe::checkForWinner()
             }
 
             // Checks verticals
-            if (y + 3 <= _gameOptions.rowY) {
+            if (y + 2 < _gameOptions.rowY) {
 
                 if (
                 (ownerAt(y * _gameOptions.rowX + x) == ownerAt(y * _gameOptions.rowX + x + _gameOptions.rowX)) &&
@@ -468,11 +468,16 @@ bool isAIBoardFull(const std::string &state) {
 
 }
 
-int checkForAIWinner(const std::string &state, const GameOptions &_gameOptions) {
+int checkForAIWinner(const std::string &state, const GameOptions &_gameOptions, int target) {
 
     for (int y = 0; y < _gameOptions.rowY; y++) {
         
         for (int x = 0; x < _gameOptions.rowX; x++) {
+
+            // If the current point we're looking @ isn't 'our guy', move forward
+            if (state[y * _gameOptions.rowX + x] - '1' != target) {
+                continue;
+            }
 
             // Checks horizontals
             if (x + 3 <= _gameOptions.rowX) {
@@ -522,7 +527,7 @@ int checkForAIWinner(const std::string &state, const GameOptions &_gameOptions) 
             }
 
             // Checks verticals
-            if (y + 3 <= _gameOptions.rowY) {
+            if (y + 2 < _gameOptions.rowY) {
 
                 if (
                 (state[y * _gameOptions.rowX + x] == state[y * _gameOptions.rowX + x + _gameOptions.rowX]) &&
@@ -548,7 +553,7 @@ int TicTacToe::negamax(std::string &state, int depth, int alpha, int beta, int p
 
     _looked_at++;
 
-    int score = checkForAIWinner(state, _gameOptions);
+    int score = checkForAIWinner(state, _gameOptions, playerColor);
 
     if (score) {
 
