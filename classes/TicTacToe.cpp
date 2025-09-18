@@ -121,8 +121,13 @@ bool TicTacToe::actionForEmptyHolder(BitHolder *holder)
     //    - Position it at the holder's position (holder->getPosition()).
     //    - Assign it to the holder: holder->setBit(newBit);
 
+    Bit *newBit = PieceForPlayer(getCurrentPlayer()->playerNumber());
+    
+    newBit->setPosition(holder->getPosition());
+    holder->setBit(newBit);
+
     // 4) Return whether we actually placed a piece. true = acted, false = ignored.
-    return false; // replace with true if you complete a successful placement    
+    return true; // replace with true if you complete a successful placement    
 }
 
 bool TicTacToe::canBitMoveFrom(Bit *bit, BitHolder *src)
@@ -144,6 +149,13 @@ void TicTacToe::stopGame()
 {
     // clear out the board
     // loop through the 3x3 array and call destroyBit on each square
+
+    for (int y = 0; y < _gameOptions.rowY; y++) {
+        for (int x = 0; x < _gameOptions.rowX; x++) {
+            _grid[x][y].destroyBit();
+        }
+    }
+
 }
 
 //
@@ -154,9 +166,19 @@ Player* TicTacToe::ownerAt(int index ) const
     // index is 0..8, convert to x,y using:
     // y = index / 3
     // x = index % 3 
+
+    int x = index % 3;
+    int y = index / 3;
+
     // if there is no bit at that location (in _grid) return nullptr
+
+    if (_grid[x][y].bit() == nullptr) {
+        return nullptr;
+    }
+
     // otherwise return the owner of the bit at that location using getOwner()
-    return nullptr;
+
+    return _grid[x][y].bit()->getOwner(); 
 }
 
 Player* TicTacToe::checkForWinner()
@@ -188,6 +210,17 @@ bool TicTacToe::checkForDraw()
     // is the board full with no winner?
     // if any square is empty, return false
     // otherwise return true
+
+    // loops through everything to check if there are any playable spaces
+
+    for (int i = 0; i < _gameOptions.rowX * _gameOptions.rowY; i++) {
+
+        if (ownerAt(i) == nullptr) {
+            return true;
+        }
+
+    }
+
     return false;
 }
 
@@ -218,7 +251,27 @@ std::string TicTacToe::stateString() const
     // remember that player numbers are zero-based, so add 1 to get '1' or '2'
     // if the bit is null, add '0' to the string
     // finally, return the constructed string
-    return "000000000";
+
+    // string that the code will add to dynamically
+    std::string to_return = "";
+
+    for (int i = 0; i < _gameOptions.rowX * _gameOptions.rowY; i++) {
+
+        Player* somePlayer = ownerAt(i);
+
+        if (somePlayer != nullptr) {
+            
+            // adds a 1 to caount for the fact that the starting player number is 0
+            to_return.append(std::to_string(somePlayer->playerNumber() + 1));
+
+        }
+        else {
+            to_return.append("0");
+        }
+
+    }
+
+    return to_return;
 }
 
 //
@@ -229,24 +282,34 @@ void TicTacToe::setStateString(const std::string &s)
 {
     // set the state of the board from the given string
     // the string will be 9 characters long, one for each square
+
     // each character will be '0' for empty, '1' for player 1 (X), and '2' for player 2 (O)
+
     // the order will be left-to-right, top-to-bottom
+
     // for example, the starting state is "000000000"
     // if player 1 has placed an X in the top-left and player 2 an O in the center, the state would be "100020000"
+
     // you can loop through the string and set each square in _grid accordingly
     // for example, if s[0] is '1', you would set _grid[0][0] to have player 1's piece
     // if s[4] is '2', you would set _grid[1][1] to have player 2's piece
     // if s[8] is '0', you would set _grid[2][2] to be empty
+    
     // you can use the PieceForPlayer function to create a new piece for a player
     // remember to convert the character to an integer by subtracting '0'
     // for example, int playerNumber = s[index] - '0';
     // if playerNumber is 0, set the square to empty (nullptr)
     // if playerNumber is 1 or 2, create a piece for that player and set it in the square
     // finally, make sure to position the piece at the holder's position
+
     // you can get the position of a holder using holder->getPosition()
+
     // loop through the 3x3 array and set each square accordingly
     // the string should always be valid, so you don't need to check its length or contents
     // but you can assume it will always be 9 characters long and only contain '0', '1', or '2'
+
+
+    
 }
 
 
