@@ -200,6 +200,76 @@ Player* TicTacToe::checkForWinner()
     // if you find a winning triple, return the player who owns that triple
     // otherwise return nullptr
 
+    for (int y = 0; y < _gameOptions.rowY; y++) {
+        
+        for (int x = 0; x < _gameOptions.rowX; x++) {
+
+            // Checks horizontals
+            if (x + 3 <= _gameOptions.rowX) {
+
+                if (
+                    (ownerAt(y * _gameOptions.rowX + x) == ownerAt(y * _gameOptions.rowX + x + 1)) &&
+                    (ownerAt(y * _gameOptions.rowX + x) == ownerAt(y * _gameOptions.rowX + x + 2)) &&
+                    (ownerAt(y * _gameOptions.rowX + x) != nullptr) 
+                ) {
+
+                    return ownerAt(y * _gameOptions.rowX + x);
+
+                }
+
+                // Checks upwards diagonals
+
+                if (y - 2 >= 0) {
+                    
+                    if (
+                    (ownerAt(y * _gameOptions.rowX + x) == ownerAt(y * _gameOptions.rowX + x + 1 - _gameOptions.rowX)) &&
+                    (ownerAt(y * _gameOptions.rowX + x) == ownerAt(y * _gameOptions.rowX + x + 2 - (_gameOptions.rowX * 2))) &&
+                    (ownerAt(y * _gameOptions.rowX + x) != nullptr) 
+                    ) {
+
+                        return ownerAt(y * _gameOptions.rowX + x);
+
+                    }
+
+                }
+
+                // Check lower diagonals
+
+                if (y + 2 <= _gameOptions.rowY) {
+
+                    if (
+                    (ownerAt(y * _gameOptions.rowX + x) == ownerAt(y * _gameOptions.rowX + x + 1 + _gameOptions.rowX)) &&
+                    (ownerAt(y * _gameOptions.rowX + x) == ownerAt(y * _gameOptions.rowX + x + 2 + (_gameOptions.rowX * 2))) &&
+                    (ownerAt(y * _gameOptions.rowX + x) != nullptr) 
+                    ) {
+
+                        return ownerAt(y * _gameOptions.rowX + x);
+
+                    }
+
+                }
+
+            }
+
+            // Checks verticals
+            if (y + 3 <= _gameOptions.rowY) {
+
+                if (
+                (ownerAt(y * _gameOptions.rowX + x) == ownerAt(y * _gameOptions.rowX + x + _gameOptions.rowX)) &&
+                (ownerAt(y * _gameOptions.rowX + x) == ownerAt(y * _gameOptions.rowX + x + (_gameOptions.rowX * 2))) &&
+                (ownerAt(y * _gameOptions.rowX + x) != nullptr) 
+                ) {
+
+                    return ownerAt(y * _gameOptions.rowX + x);
+
+                }
+
+            }
+
+        }
+
+    }
+
     // Hint: Consider using an array to store the winning combinations
     // to avoid repetitive code
     return nullptr;
@@ -216,12 +286,12 @@ bool TicTacToe::checkForDraw()
     for (int i = 0; i < _gameOptions.rowX * _gameOptions.rowY; i++) {
 
         if (ownerAt(i) == nullptr) {
-            return true;
+            return false;
         }
 
     }
 
-    return false;
+    return true;
 }
 
 //
@@ -308,8 +378,30 @@ void TicTacToe::setStateString(const std::string &s)
     // the string should always be valid, so you don't need to check its length or contents
     // but you can assume it will always be 9 characters long and only contain '0', '1', or '2'
 
+    // First, the code will wipe the board
 
-    
+    stopGame();
+
+    // Then the code will create the new board, given the new data
+
+
+    // WILL FINISH LATER
+
+
+
+    for(int i = 0; i < s.length(); i++) {
+
+        if (s[i] == '1') {
+            
+            
+
+        }
+        else if (s[i] == '2') {
+            
+        }
+
+    }
+
 }
 
 
