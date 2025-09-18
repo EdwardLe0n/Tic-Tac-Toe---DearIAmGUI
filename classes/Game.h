@@ -74,6 +74,7 @@ public:
 
 	virtual		void	stopGame() = 0;
     virtual     bool    gameHasAI();
+	virtual     void    gameWillHaveAI(bool has_ai);
     virtual     void    updateAI();
 
 	virtual		std::string	initialStateString() = 0;
@@ -104,5 +105,6 @@ public:
 	GameOptions 			_gameOptions;
 
 	int						_gameNumber;
+	bool					_has_ai;
 };
 

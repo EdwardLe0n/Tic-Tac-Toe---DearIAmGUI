@@ -105,11 +105,21 @@ Code for the quick space check.
 
 #### And as a recap
 
-Since the code is going from top to bttom, then left to right, it'll start at the left most index, tackle each win possibility, then go on from there.
+Since the code is going from top to bottom, then left to right, it'll start at the left most index, tackle each win possibility, then go on from there.
 
 So as an example, this is what the next order for the following x would look like (imagine the line before the point in which everything else intersects is dotted)
 
 ![main idea 2](./images/ref4.jpg)
+
+### As for the extra credit...
+
+Honestly, this portion was the best part, as it was fairly free form! 
+
+When it came to the development of the AI, I just grabbed the code from todays lecture so that wasn't too much trouble.
+
+However, I quite enjoyed having the opportunity to tear open the imgui docs to find what I'd need to add some UI to allow for devs to add their own gui elements, and then connect them button wise.
+
+All in all, looking forward to more rat moments like this!
 
 ### In summary
 

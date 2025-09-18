@@ -168,9 +168,15 @@ bool Game::animateAndPlaceBitFromTo(Bit *bit, BitHolder*src, BitHolder*dst)
 	return false;
 }
 
+// new function so that a player can ask to go against ai or not
 bool Game::gameHasAI()
 {
-    return true;
+    return _has_ai;
+}
+
+void Game::gameWillHaveAI(bool has_ai)
+{
+    _has_ai = has_ai;
 }
 
 void Game::updateAI()

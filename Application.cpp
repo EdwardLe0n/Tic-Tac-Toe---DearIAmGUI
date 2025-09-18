@@ -17,6 +17,7 @@ namespace ClassGame {
         void GameStartUp() 
         {
             game = new TicTacToe();
+            game->gameWillHaveAI(false);
             game->setUpBoard();
         }
 
@@ -36,6 +37,20 @@ namespace ClassGame {
                 ImGui::Begin("Settings");
                 ImGui::Text("Current Player Number: %d", game->getCurrentPlayer()->playerNumber());
                 ImGui::Text("Current Board State: %s", game->stateString().c_str());
+
+                ImGui::Text("Would you like to beat an AI?");
+
+                if (ImGui::Button("yes")) {
+                    game->gameWillHaveAI(true);
+                    game->setUpBoard();
+                }
+
+                ImGui::SameLine();
+
+                if (ImGui::Button("no")) {
+                    game->gameWillHaveAI(false);
+                    game->setUpBoard();
+                }
 
                 if (gameOver) {
                     ImGui::Text("Game Over!");
