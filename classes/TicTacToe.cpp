@@ -88,9 +88,16 @@ void TicTacToe::setUpBoard()
 
     }
 
+    if (gameHasAI()) {
+        setAIPlayer(AI_PLAYER);
+    }
+
     // finally we should call startGame to get everything going
 
     startGame();
+
+    // testing
+    // setStateString("100020000");
 
 }
 
@@ -167,8 +174,8 @@ Player* TicTacToe::ownerAt(int index ) const
     // y = index / 3
     // x = index % 3 
 
-    int x = index % 3;
-    int y = index / 3;
+    int x = index / 3;
+    int y = index % 3;
 
     // if there is no bit at that location (in _grid) return nullptr
 
@@ -235,7 +242,7 @@ Player* TicTacToe::checkForWinner()
 
                 // Check lower diagonals
 
-                if (y + 2 <= _gameOptions.rowY) {
+                if (y + 2 < _gameOptions.rowY) {
 
                     if (
                     (ownerAt(y * _gameOptions.rowX + x) == ownerAt(y * _gameOptions.rowX + x + 1 + _gameOptions.rowX)) &&
@@ -299,7 +306,14 @@ bool TicTacToe::checkForDraw()
 //
 std::string TicTacToe::initialStateString()
 {
-    return "000000000";
+
+    std::string to_return = "";
+
+    for (int i = 0; i < _gameOptions.rowX * _gameOptions.rowY; i++) {
+        to_return += '0';
+    }
+
+    return to_return;
 }
 
 //
@@ -384,20 +398,16 @@ void TicTacToe::setStateString(const std::string &s)
 
     // Then the code will create the new board, given the new data
 
-
-    // WILL FINISH LATER
-
-
-
     for(int i = 0; i < s.length(); i++) {
 
-        if (s[i] == '1') {
-            
-            
+        if(s[i] != '0') {
 
-        }
-        else if (s[i] == '2') {
+            Bit* somebit = PieceForPlayer(s[i] - '1');
+
+            somebit->setPosition(_grid[i%3][i/3].getPosition());
             
+            _grid[i%3][i/3].setBit(somebit);
+
         }
 
     }
@@ -411,5 +421,168 @@ void TicTacToe::setStateString(const std::string &s)
 void TicTacToe::updateAI() 
 {
     // we will implement the AI in the next assignment!
+
+    std::string state = stateString();
+    int bestMove = -100000;
+    int bestSquare = -1;
+
+    _looked_at = 0;
+
+    int alpha = -100000;
+    int beta = 100000;
+
+	for (int i = 0; i < _gameOptions.rowX * _gameOptions.rowY; i++) {
+
+		if(state[i] == '0') {
+
+			// actionForEmptyHolder(&_grid[i/3][i%3]);
+			
+            state[i] = '2';
+
+            int aimove = -negamax(state, 0, alpha, beta, HUMAN_PLAYER);
+
+            state[i] = '0';
+
+            if (aimove > bestMove) {
+
+                std::cout << i << std::endl;
+
+                bestMove = aimove;
+                bestSquare = i;
+            }
+
+		}
+
+	}
+
+    if (bestSquare != -1) {
+        actionForEmptyHolder(&_grid[bestSquare/3][bestSquare%3]);
+        endTurn();
+    }
+
 }
 
+bool isAIBoardFull(const std::string &state) {
+
+    return (state.find('0') == std::string::npos);
+
+}
+
+int checkForAIWinner(const std::string &state, const GameOptions &_gameOptions) {
+
+    for (int y = 0; y < _gameOptions.rowY; y++) {
+        
+        for (int x = 0; x < _gameOptions.rowX; x++) {
+
+            // Checks horizontals
+            if (x + 3 <= _gameOptions.rowX) {
+
+                if (
+                    (state[y * _gameOptions.rowX + x] == state[y * _gameOptions.rowX + x + 1]) &&
+                    (state[y * _gameOptions.rowX + x] == state[y * _gameOptions.rowX + x + 2]) &&
+                    (state[y * _gameOptions.rowX + x] != '0') 
+                ) {
+
+                    return 10;
+
+                }
+
+                // Checks upwards diagonals
+
+                if (y - 2 >= 0) {
+                    
+                    if (
+                    (state[y * _gameOptions.rowX + x] == state[y * _gameOptions.rowX + x + 1 - _gameOptions.rowX]) &&
+                    (state[y * _gameOptions.rowX + x] == state[y * _gameOptions.rowX + x + 2 - (_gameOptions.rowX * 2)]) &&
+                    (state[y * _gameOptions.rowX + x] != '0') 
+                    ) {
+
+                        return 10;
+
+                    }
+
+                }
+
+                // Check lower diagonals
+
+                if (y + 2 < _gameOptions.rowY) {
+
+                    if (
+                    (state[y * _gameOptions.rowX + x] == state[y * _gameOptions.rowX + x + 1 + _gameOptions.rowX]) &&
+                    (state[y * _gameOptions.rowX + x] == state[y * _gameOptions.rowX + x + 2 + (_gameOptions.rowX * 2)]) &&
+                    (state[y * _gameOptions.rowX + x] != '0') 
+                    ) {
+
+                        return 10;
+
+                    }
+
+                }
+
+            }
+
+            // Checks verticals
+            if (y + 3 <= _gameOptions.rowY) {
+
+                if (
+                (state[y * _gameOptions.rowX + x] == state[y * _gameOptions.rowX + x + _gameOptions.rowX]) &&
+                (state[y * _gameOptions.rowX + x] == state[y * _gameOptions.rowX + x + (_gameOptions.rowX * 2)]) &&
+                (state[y * _gameOptions.rowX + x] != '0') 
+                ) {
+
+                    return 10;
+
+                }
+
+            }
+
+        }
+
+    }
+
+    return 0;
+
+}
+
+int TicTacToe::negamax(std::string &state, int depth, int alpha, int beta, int playerColor) {
+
+    _looked_at++;
+
+    int score = checkForAIWinner(state, _gameOptions);
+
+    if (score) {
+
+        // a winning state here is a loss for the recursive parent
+        return -score;
+
+    }
+
+    if (isAIBoardFull(state)) {
+        return 0;
+    }
+
+    int bestVal = -10000;
+
+    for(int i = 0; i < _gameOptions.rowX * _gameOptions.rowY; i++) {
+
+        if(state[i] == '0') {
+
+            state[i] = playerColor == HUMAN_PLAYER ? '1' : '2';
+            
+            // The reason alpha and beta swap is beacuse they represent the player and the AI
+            // On top of this, what is good for one, is bad for the other
+            // i.e. Player wants to win, but the AI doesn't want the player to win, and vice-versa
+            bestVal = std::max(bestVal, -negamax(state, depth + 1, -beta, -alpha, -playerColor));
+            state[i] = '0';
+            alpha = std::max(alpha, bestVal);
+            if (alpha > beta) {
+                break;
+            }
+
+        }
+
+    }
+
+    return bestVal;
+
+}
