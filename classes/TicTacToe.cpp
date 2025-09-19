@@ -437,7 +437,7 @@ void TicTacToe::updateAI()
 
 			// actionForEmptyHolder(&_grid[i/3][i%3]);
 			
-            state[i] = '2';
+            state[i] = '1';
 
             int aimove = -negamax(state, 0, alpha, beta, HUMAN_PLAYER);
 
