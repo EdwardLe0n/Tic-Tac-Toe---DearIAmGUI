@@ -94,12 +94,17 @@ void Game::endTurn()
 void Game::scanForMouse()
 {
 
+	// If the game is over, don't let another piece be played
+	if (checkForWinner() != nullptr) {
+		return;
+	}
+
 	// uncomment when it is ai time
 
     if (gameHasAI() && getCurrentPlayer()->isAIPlayer()) 
     {
-       updateAI();
-       return;
+		updateAI();
+		return;
     }
 
     ImVec2 mousePos = ImGui::GetMousePos();

@@ -1,5 +1,10 @@
 # Tic Tac Toe - DearIAmGUI
 
+### Directory:
+
+- [Part 1: The whole attempt](#the-tic-tac-toe-attempt---9182025)
+- [Part 2: The review](#negamax-alpha-beta-pruning-and-a-review---9242025)
+
 ## The tic tac toe attempt - 9/18/2025
 
 ### As a starter, context
@@ -130,3 +135,23 @@ In hindsight, would bit shifting have worked as an option?
 ***Yes.*** 
 
 However, five hundred ifs in two for loops go **brrrrrr**.
+
+---
+
+## Negamax, Alpha-Beta Pruning, and a Review - 9/24/2025
+
+### Thoughts on : Mini-max
+
+
+
+### Thoughts on : Negamax
+
+
+
+### Thoughts on Alpha-Beta Pruning
+
+
+z
+### Final thoughts
+
+All in all, I found it quite fascinating that all the work done has built off each other quite well! By extending the mini-max code a 

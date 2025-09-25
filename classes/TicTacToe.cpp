@@ -174,8 +174,8 @@ Player* TicTacToe::ownerAt(int index ) const
     // y = index / 3
     // x = index % 3 
 
-    int x = index / 3;
-    int y = index % 3;
+    int x = index % 3;
+    int y = index / 3;
 
     // if there is no bit at that location (in _grid) return nullptr
 
@@ -456,7 +456,7 @@ void TicTacToe::updateAI()
 	}
 
     if (bestSquare != -1) {
-        actionForEmptyHolder(&_grid[bestSquare/3][bestSquare%3]);
+        actionForEmptyHolder(&_grid[bestSquare%_gameOptions.rowX][bestSquare/_gameOptions.rowX]);
         endTurn();
     }
 
