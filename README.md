@@ -140,18 +140,41 @@ However, five hundred ifs in two for loops go **brrrrrr**.
 
 ## Negamax, Alpha-Beta Pruning, and a Review - 9/24/2025
 
+### But first, an algorithm update
+
+So it was made apparent that I *may have had some more bugs in my code*...
+
+With that in mind, did some digging, and all I could really find that was bugged was that I flipped the division and modulo in two separate places.
+
+**awesome**
+
+Out side of that, I also made a lil update so that no player would be able to play any new pieces if the game hes been won! This id done through inserting this extra code at the start of the scanForMouse function!
+
+<pre>
+<code>if (checkForWinner() != nullptr) { </code>
+<code>	return; </code>
+<code>} </code>
+</pre>
+
+
 ### Thoughts on : Mini-max
 
 
 
 ### Thoughts on : Negamax
 
-
+After doing some more research, I for----
 
 ### Thoughts on Alpha-Beta Pruning
 
+This is definetely an interesting concept, yet one that makes pretty valid sense, as if you were to make a move that could possible lead to the other players win in an upcoming turn, then that's absolutely not a move you'd want to make. 
 
-z
+Adding onto this, making it so that the alpha is always the max between the best value and the current alpha is great, as it ensure that if the alpha were ever to be higher than the beta. Then, we should immediately return the bestVal, as that would then lead to a win for the other player, so we should no longer be looking down this branch!
+
+> As a fun fact, apparently the mix of the NegaMax function and Alpha-Beta Pruning is sometimes referred to as NegaScout! [Check it out here!](https://en.wikipedia.org/wiki/Principal_variation_search)
+
 ### Final thoughts
 
-All in all, I found it quite fascinating that all the work done has built off each other quite well! By extending the mini-max code a 
+All in all, I found it quite fascinating that all the work done has built off each other quite well! On top of this, finding out how game AIs work at a smaller scale using these recursive algorithms has been great!
+
+Looking forward to making more games in the future!
