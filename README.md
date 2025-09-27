@@ -157,13 +157,17 @@ Out side of that, I also made a lil update so that no player would be able to pl
 </pre>
 
 
-### Thoughts on : Mini-max
+### Thoughts on : Minimax
 
+Outside of the tasked video, I did want to check out the psuedocode for minimax itself. 
 
+And solely through the fact that we aren't flipping the result of the new minimax call, it then makes sense that minimax could work for games outside of a 2-player only context! Whilst there might be some extra code needed to make that possible, such as including a proper turn order for more complex +2 player games, the code itself is pretty simple to implement (outside of needing to add custom AI evaluators), making it a nice include in many game projects.
 
 ### Thoughts on : Negamax
 
-After doing some more research, I for----
+On the other hand, this system feels like it's way too easy too work with, but then it makes sense why it is so, as it only works for two-player games. Personally, I don't have too many thoughts on the algorithm, as upon further research, it makes it's appeal and draw backs quite apparent.
+
+Regardless, for both of the max algorithms, I'm looking forward to implementing a depth system, so that the game doesn't need to always go to terminal, but that then means that there will need to be a lot more gamestate checking to make that even possible!
 
 ### Thoughts on Alpha-Beta Pruning
 
